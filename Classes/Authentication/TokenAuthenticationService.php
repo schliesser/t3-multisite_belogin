@@ -61,7 +61,7 @@ class TokenAuthenticationService extends AbstractAuthenticationService
         return 110;
     }
 
-    protected function getParameterFromRequest(string $parameterName): ?string
+    protected function getParameterFromRequest(string $parameterName): string
     {
         if ((new Typo3Version())->getMajorVersion() >= 12) {
             /** @var ServerRequest $request */
@@ -70,12 +70,12 @@ class TokenAuthenticationService extends AbstractAuthenticationService
             if (isset($parsedBody[$parameterName])) {
                 return trim((string)($parsedBody[$parameterName]));
             }
-            return $request->getQueryParams()[$parameterName] ?? null;
+            return $request->getQueryParams()[$parameterName] ?? '';
         }
         if (isset($_POST[$parameterName])) {
             return trim((string)($_POST[$parameterName] ?? ''));
         }
-        return trim((string)($_GET[$parameterName]));
+        return trim((string)($_GET[$parameterName] ?? ''));
     }
 
 }
